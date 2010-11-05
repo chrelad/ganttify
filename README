@@ -1,0 +1,11 @@
+Ganttify is (will be) a jQuery plugin that generates gantt charts
+
+The goals for this project include but are not limited to
+- Ability to load items via XHR
+- Ability to load items via callbacks
+- Ability to parse XML and JSON at minimum
+- Backwards compatibility with older browsers
+- As screen size get's smaller, hide date/completion/etc columns
+- Ability to re-order items in the gantt chart
+- Look good :D
+- Be fast!

@@ -1,0 +1,27 @@
+.ganttify-root{
+	border:1px solid #eee;
+	border-radius:3px;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+}
+/*
+ * We don't want margin/padding on any elements
+ * in our gantt chart unless explicitly needed.
+ */
+.ganttify-root *{
+	margin:0px;
+	padding:0px;
+}
+.ganttify-left{
+	float:left;
+	width:40%;
+}
+.ganttify-right{
+	float:right;
+	width:60%;
+}
+.ganttify-clear{
+	clear:both;
+	height:0px;
+	overflow:hidden;
+}
