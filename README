@@ -1,26 +1,23 @@
 Ganttify is (will be) a jQuery plugin that generates gantt charts
 
-DOM layout
-+-----------------------------------------------------------+
-|+----------+-------+-------+------------------------------+|
-||Name      | % Cmp | Days  |                              ||
-|+----------+-------+-------+------------------------------+|
-||                      <clearing div>                     ||
-|+----------+-------+-------+------------------------------+|
-||Item #1   | 50%   |   3   | ===---                       ||
-|+----------+-------+-------+------------------------------+|
-||                      <clearing div>                     ||
-|+----------+-------+-------+------------------------------+|
-||Item #2   | 30%   |   6   |       ===---------           ||
-|+----------+-------+-------+------------------------------+|
-+-----------------------------------------------------------+
-
 The goals for this project include but are not limited to
 - Ability to load items via XHR
 - Ability to load items via callbacks
+- Ability to load items via constructor (DONE)
 - Ability to parse XML and JSON at minimum
 - Backwards compatibility with older browsers
 - As screen size get's smaller, hide date/completion/etc columns
+- Make the header optional
+- When width of gantt root container get's too small, start hiding columns
+- User can specify the order they want columns hidden
+- Pan via mouse drag
+- Allow hide/show columns at runtime
+- Only re-draw/update what changed
+- User defined callbacks for:
+  - Items with no title (DONE)
+	- Items with no description (DONE)
+- Zoom via mouse scroll
+- Keyboard zoom/pan/expand/collapse
 - Ability to re-order items in the gantt chart
 - Look good :D
 - Be fast!
