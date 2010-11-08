@@ -5,9 +5,14 @@
 				var $this = $(this),
 					settings = {
 						"url":null,
-						"name":"Blah blah",
-						"fallbacks":{
-							"missing_title":"Unknown"
+						"name":"Gantt chart",
+						"callbacks":{
+							"onMissingTitle":function(item){
+								return "Missing title"
+							},
+							"onMissingDescription":function(item){
+								return "Missing description"
+							}
 						}
 					},
 					data = $this.data("gantt"),
@@ -26,6 +31,12 @@
 					items = options["items"];
 					delete options["items"];
 				}
+
+				// Remove any callbacks that aren't functions
+				if(options && typeof options.callbacks == "object")
+					for(var i in options.callbacks)
+						if(typeof options.callbacks[i] != "function")
+							delete options.callbacks[i];
 
 				// Set the options
 				if(options)
@@ -79,7 +90,13 @@
 				// Title doesn't exist, set default
 				if(typeof item["title"] == "undefined"
 					|| item.title == null)
-					item.title = data.settings.fallbacks.missing_title;
+					item.title =
+						data.settings.callbacks.onMissingTitle(item);
+				// Description doesn't exist, set default
+				if(typeof item["description"] == "undefined"
+					|| item.description == null)
+					item.description =
+						data.settings.callbacks.onMissingDescription(item);
 				// The item already exists
 				if(typeof data.items[item.id] != "undefined")
 					return false;
@@ -105,12 +122,11 @@
 	};
 	$.fn.ganttify = function(method)
 	{
-		if(methods[method]){
+		if(methods[method])
 			return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-		} else if(typeof method === 'object' || !method){
+		else if(typeof method === 'object' || !method)
 			return methods.init.apply(this, arguments);
-		} else {
+		else
 			$.error("Method " + method + " does not exist on jQuery.ganttify");
-		}
 	};
 })(jQuery);
