@@ -79,27 +79,33 @@
 			return this.each(function(){
 				var $this = $(this),
 					data = $this.data("gantt");
+
 				// Must have an item to add
 				if(typeof item == "undefined"
 					|| item == null)
 					return false;
+
 				// Must have an ID
 				if(typeof item["id"] == "undefined"
 					|| item.title == null)
 					return false;
+
 				// Title doesn't exist, set default
 				if(typeof item["title"] == "undefined"
 					|| item.title == null)
 					item.title =
 						data.settings.callbacks.onMissingTitle(item);
+
 				// Description doesn't exist, set default
 				if(typeof item["description"] == "undefined"
 					|| item.description == null)
 					item.description =
 						data.settings.callbacks.onMissingDescription(item);
+
 				// The item already exists
 				if(typeof data.items[item.id] != "undefined")
 					return false;
+
 				// Add the item
 				data.items[item.id] = item;
 			});
@@ -114,6 +120,7 @@
 			return this.each(function(){
 				var $this = $(this),
 					data = $this.data("gantt");
+
 				$(window).unbind(".gantt");
 				data.gantt.remove();
 				$this.removeData("gantt");
