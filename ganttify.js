@@ -17,10 +17,7 @@
 					},
 					data = $this.data("gantt"),
 					items = [],
-					gantt = $("<div/>"),
-					gantt_left = $("<div/>"),
-					gantt_right = $("<div/>"),
-					gantt_clear = $("<div/>");
+					gantt = $("<div/>");
 
 				// If items were added in the constructor,
 				// add them to a temporary variable for
@@ -54,14 +51,6 @@
 
 				// Add some CSS hooks to our DOM nodes
 				gantt.addClass("ganttify-root");
-				gantt_left.addClass("ganttify-left");
-				gantt_right.addClass("ganttify-right");
-				gantt_clear.addClass("ganttify-clear");
-
-				// Add child nodes
-				gantt.append(gantt_left);
-				gantt.append(gantt_right);
-				gantt.append(gantt_clear);
 
 				// Append the node
 				$this.append(gantt);
