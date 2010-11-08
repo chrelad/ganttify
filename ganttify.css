@@ -1,8 +1,10 @@
 .ganttify-root{
-	border:1px solid #eee;
+	border:1px solid #ddd;
 	border-radius:3px;
 	-moz-border-radius:3px;
 	-webkit-border-radius:3px;
+	cursor:default;
+	position:relative;
 }
 /*
  * We don't want margin/padding on any elements
@@ -12,16 +14,55 @@
 	margin:0px;
 	padding:0px;
 }
-.ganttify-left{
-	float:left;
-	width:40%;
-}
-.ganttify-right{
-	float:right;
-	width:60%;
+.ganttify-grid{
+	position:absolute;
+	top:0px;
+	right:0px;
+	height:100%;
+	overflow:hidden;
+	background:#eee;
+	width:55%;
 }
 .ganttify-clear{
 	clear:both;
 	height:0px;
 	overflow:hidden;
+}
+.ganttify-item-row{
+}
+.ganttify-item-title,
+.ganttify-item-days,
+.ganttify-item-start,
+.ganttify-item-end,
+.ganttify-item-bar{
+	float:left;
+	font-size:11px;
+	overflow:hidden;
+	white-space:nowrap;
+}
+.ganttify-item-title div,
+.ganttify-item-days div,
+.ganttify-item-start div,
+.ganttify-item-end div,
+.ganttify-item-bar div{
+	padding:5px;
+}
+.ganttify-item-title{
+	width:20%;
+}
+.ganttify-item-days{
+	width:5%;
+	text-align:center;
+}
+.ganttify-item-start{
+	width:10%;
+	text-align:center;
+}
+.ganttify-item-end{
+	width:10%;
+	text-align:center;
+}
+.ganttify-item-bar{
+	width:55%;
+	position:relative;
 }

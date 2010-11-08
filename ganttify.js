@@ -17,7 +17,8 @@
 					},
 					data = $this.data("gantt"),
 					items = [],
-					gantt = $("<div/>");
+					gantt = $("<div/>"),
+					grid = $("<div/>");
 
 				// If items were added in the constructor,
 				// add them to a temporary variable for
@@ -45,23 +46,24 @@
 						"target":$this,
 						"settings":settings,
 						"items":{},
+						"days":10,
 						"gantt":gantt
 					});
 				}
 
 				// Add some CSS hooks to our DOM nodes
 				gantt.addClass("ganttify-root");
+				grid.html("&nbsp;");
+				grid.addClass("ganttify-grid");
 
 				// Append the node
+				gantt.append(grid);
 				$this.append(gantt);
 
 				// A few test cases
 				if(items.length > 0)
 					for(var i in items)
 						$this.ganttify("add", items[i]);
-
-				// Try to update the chart
-				$this.ganttify("update");
 			});
 		},
 		"add":function(item){
@@ -95,8 +97,118 @@
 				if(typeof data.items[item.id] != "undefined")
 					return false;
 
-				// Add the item
+				// Add the item to the item array
 				data.items[item.id] = item;
+
+				// Append the item
+				$this.ganttify("append", item.id);
+			});
+		},
+		"append":function(id){
+			return this.each(function(){
+				var $this = $(this),
+					data = $this.data("gantt");
+
+				// Make sure item with ID exists
+				if(typeof data.items[id] == "undefined")
+					return false;
+
+				// Create row node for this item
+				var row = $("<div />");
+				row.attr("id", "ganttify-item-row-" + id);
+				row.addClass("ganttify-item-row");
+
+				// Create title node for this item
+				var title = $("<div />");
+				title.attr("id", "ganttify-item-title-" + id);
+				title.addClass("ganttify-item-title");
+				title.html($("<div />")
+					.html(data.items[id].title)
+					.attr("title", data.items[id].title));
+				row.append(title);
+
+				// Create days node for this item
+				var days = $("<div />");
+				days.attr("id", "ganttify-item-days-" + id);
+				days.addClass("ganttify-item-days");
+				days.html($("<div />")
+					.html(data.items[id].days)
+					.attr("title", data.items[id].days));
+				row.append(days);
+
+				// Create start node for this item
+				var start = $("<div />");
+				start.attr("id", "ganttify-item-start-" + id);
+				start.addClass("ganttify-item-start");
+				start.html($("<div />")
+					.html(data.items[id].start)
+					.attr("title", data.items[id].start));
+				row.append(start);
+
+				// Create end node for this item
+				var end = $("<div />");
+				end.attr("id", "ganttify-item-end-" + id);
+				end.addClass("ganttify-item-end");
+				end.html($("<div />")
+					.html(data.items[id].end)
+					.attr("title", data.items[id].end));
+				row.append(end);
+
+				// Create bar node for this item
+				var bar = $("<div />");
+				bar.attr("id", "ganttify-item-bar-" + id);
+				bar.addClass("ganttify-item-bar");
+				bar.html("&nbsp;");
+				row.append(bar);
+
+				// Add a clearing div
+				row.append($("<div />").addClass("ganttify-clear"));
+
+				data.gantt.append(row);
+				$this.ganttify("columns");
+				$this.ganttify("bars");
+			});
+		},
+		"columns":function(){
+			return this.each(function(){
+				var $this = $(this),
+					data = $this.data("gantt");
+			});
+		},
+		"bars":function(){
+			return this.each(function(){
+				var $this = $(this),
+					data = $this.data("gantt");
+				for(var id in data.items)
+					$this.ganttify("bar", id);
+			});
+		},
+		"bar":function(id){
+			return this.each(function(){
+				var $this = $(this),
+					data = $this.data("gantt");
+
+				// If existing guts exist, just update them
+				if($("ganttify-item-bar-" + id).find("div.ganttify-item-bar-guts").length > 0)
+					return $this.ganttify("bar_update", id);
+
+				// Create new gut nodes and then update 'em 
+				var guts = $("<div />");
+				guts.addClass("ganttify-item-bar-guts");
+
+				var left = $("<div />");
+				left.addClass("ganttify-item-bar-left");
+
+				var right = $("<div />");
+				right.addClass("ganttify-item-bar-right");
+
+				var center = $("<div />");
+				center.addClass("ganttify-item-bar-center");
+
+				guts.append(left);
+				guts.append(center);
+				guts.append(right);
+				$("ganttify-item-bar-" + id).append(guts);
 			});
 		},
 		"update":function(){
