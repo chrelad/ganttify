@@ -12,7 +12,11 @@
 		<div id="gantt"></div>
 		<script type="text/javascript">
 			$("#gantt").ganttify({
-				"name":"Test Gantt"
+				"name":"Test Gantt",
+				"items":[
+					{"id":5,"title":"This is the title","days":5,"start":"11/12/2010","end":"12/02/2010"},
+					{"id":6,"title":"Item number 2 title","days":12,"start":"11/07/2010","end":"11/12/2010"}
+				]
 			});
 		</script>
 	</body>

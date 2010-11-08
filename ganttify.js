@@ -5,13 +5,27 @@
 				var $this = $(this),
 					settings = {
 						"url":null,
-						"name":"Blah blah"
+						"name":"Blah blah",
+						"fallbacks":{
+							"missing_title":"Unknown"
+						}
 					},
 					data = $this.data("gantt"),
+					items = [],
 					gantt = $("<div/>"),
 					gantt_left = $("<div/>"),
-					gantt_right = $("<div/>");
+					gantt_right = $("<div/>"),
 					gantt_clear = $("<div/>");
+
+				// If items were added in the constructor,
+				// add them to a temporary variable for
+				// later addition.
+				if(options
+					&& typeof options["items"] == "object"
+					&& options["items"].length > 0){
+					items = options["items"];
+					delete options["items"];
+				}
 
 				// Set the options
 				if(options)
@@ -27,25 +41,10 @@
 					});
 				}
 
-				/*
-				 * Set the class name for the root
-				 * div of the gantt chart
-				 */
+				// Add some CSS hooks to our DOM nodes
 				gantt.addClass("ganttify-root");
-
-				/*
-				 * Add class name to the left side
-				 */
 				gantt_left.addClass("ganttify-left");
-
-				/*
-				 * Add class name to the right side
-				 */
 				gantt_right.addClass("ganttify-right");
-
-				/*
-				 * Add class name to the clearing div
-				 */
 				gantt_clear.addClass("ganttify-clear");
 
 				// Add child nodes
@@ -56,8 +55,12 @@
 				// Append the node
 				$this.append(gantt);
 
-				$this.ganttify("add",{"id":5,"title":"The first task","days":2,"start":"11/07/2010","end":"11/20/2010"});
-				$this.ganttify("add",{"id":6,"title":"This is the task","days":6,"start":"11/23/2010","end":"12/3/2010"});
+				// A few test cases
+				if(items.length > 0)
+					for(var i in items)
+						$this.ganttify("add", items[i]);
+
+				// Try to update the chart
 				$this.ganttify("update");
 			});
 		},
@@ -66,16 +69,20 @@
 				var $this = $(this),
 					data = $this.data("gantt");
 				// Must have an item to add
-				if(typeof item == "undefined")
+				if(typeof item == "undefined"
+					|| item == null)
 					return false;
 				// Must have an ID
-				if(typeof item["id"] == "undefined")
+				if(typeof item["id"] == "undefined"
+					|| item.title == null)
 					return false;
+				// Title doesn't exist, set default
+				if(typeof item["title"] == "undefined"
+					|| item.title == null)
+					item.title = data.settings.fallbacks.missing_title;
 				// The item already exists
-				if(typeof data.items[item.id] != "undefined"){
-					alert("The item already exists: " + item.id);
+				if(typeof data.items[item.id] != "undefined")
 					return false;
-				}
 				// Add the item
 				data.items[item.id] = item;
 			});
@@ -84,7 +91,6 @@
 			return this.each(function(){
 				var $this = $(this),
 					data = $this.data("gantt");
-				alert(data.items[6].id);
 			});
 		},
 		"destroy":function(){
