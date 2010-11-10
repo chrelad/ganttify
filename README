@@ -21,3 +21,16 @@ The goals for this project include but are not limited to
 - Ability to re-order items in the gantt chart
 - Look good :D
 - Be fast!
+
+Questions:
+- Think about how to calculate the epoch's when days/start/end/etc are missing from an item
+- Perhaps we just omit items with erronous/missing properties (start, end, days)
+- Which number of days do we use, the one we calculate, or the user specified one?
+- Should we even rely on a "number of days" property?
+	It would allow for a start date and offset resulting in less network traffic
+	Would allow for an end date and negative offset resulting in less network traffic
+- Do we even calculate the number of days if a user specified one exists?
+- If we find our # days don't match user specified, what do we do?
+	User definable callback?
+	Omit item altogether?
+	Use our number of days?

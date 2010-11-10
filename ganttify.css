@@ -20,15 +20,13 @@
 	right:0px;
 	height:100%;
 	overflow:hidden;
-	background:#eee;
+/*	background:#eee; */
 	width:55%;
 }
 .ganttify-clear{
 	clear:both;
 	height:0px;
 	overflow:hidden;
-}
-.ganttify-item-row{
 }
 .ganttify-item-title,
 .ganttify-item-days,
@@ -43,8 +41,9 @@
 .ganttify-item-title div,
 .ganttify-item-days div,
 .ganttify-item-start div,
-.ganttify-item-end div,
-.ganttify-item-bar div{
+.ganttify-item-end div{
+	height:15px;
+	line-height:15px;
 	padding:5px;
 }
 .ganttify-item-title{
@@ -65,4 +64,17 @@
 .ganttify-item-bar{
 	width:55%;
 	position:relative;
+}
+.ganttify-item-bar-guts{
+	padding:5px;
+	height:15px;
+	line-height:15px;
+}
+.ganttify-item-bar-guts div{
+	border:1px solid #ddd;
+	background:#eee;
+	border-radius:3px;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	text-align:center;
 }
