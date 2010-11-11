@@ -201,9 +201,8 @@
 			return this.each(function(){
 				var $this = $(this),
 					data = $this.data("gantt");
-				for(var id in data.items){
+				for(var id in data.items)
 					$this.ganttify("bar", id);
-				}
 			});
 		},
 		"bar":function(id){
