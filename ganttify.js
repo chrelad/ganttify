@@ -46,6 +46,8 @@
 						"target":$this,
 						"settings":settings,
 						"items":{},
+						"min":9999999999999,
+						"max":0,
 						"days":10,
 						"gantt":gantt
 					});
@@ -54,6 +56,7 @@
 				// Add some CSS hooks to our DOM nodes
 				gantt.addClass("ganttify-root");
 				grid.html("&nbsp;");
+				grid.attr("id", "ganttify-grid");
 				grid.addClass("ganttify-grid");
 
 				// Append the node
@@ -65,8 +68,10 @@
 					for(var i in items)
 						$this.ganttify("add", items[i]);
 
+				$this.ganttify("duration");
 				$this.ganttify("columns");
 				$this.ganttify("bars");
+				$this.ganttify("offsets");
 			});
 		},
 		"add":function(item){
@@ -106,13 +111,8 @@
 					"end":null
 				};
 
-				// If start date, calculate stamp
-				if(item.start)
-					item.stamps.start = Date.parse(item.start);
-
-				// If end date, calculate stamp
-				if(item.end)
-					item.stamps.end = Date.parse(item.end);
+				$this.ganttify("stamps", item);
+				$this.ganttify("extend", item);
 
 				// Calculate seconds
 				if(item.stamps.end > 0 && item.stamps.start > 0)
@@ -127,6 +127,79 @@
 
 				// Append the item
 				$this.ganttify("append", item.id);
+			});
+		},
+		"offsets":function(){
+			return this.each(function(){
+				var $this = $(this),
+					data = $this.data("gantt");
+
+				for(var i in data.items)
+					$this.ganttify("offset", i);
+			});
+		},
+		"offset":function(id){
+			return this.each(function(){
+				var $this = $(this),
+					data = $this.data("gantt");
+
+				// Cache the offset in the item
+				data.items[id].offset = (data.items[id].stamps.start - data.min)
+					/ 1000 / 60 / 60 / 24;
+
+				// Set the left attribute of the bar
+				$("#ganttify-item-bar-" + id + " .ganttify-item-bar-guts").css("left", (data.items[id].offset * 25) + "px");
+			});
+		},
+		"duration":function(){
+			return this.each(function(){
+				var $this = $(this),
+					data = $this.data("gantt");
+
+				// Duration
+				data.duration = (data.max - data.min);
+
+				// Number of days
+				data.days = data.duration / 1000 / 60 / 60 / 24;
+				console.log("Days: " + data.days);
+
+				// Number of hours
+				data.hours = data.duration / 1000 / 60 / 60;
+				console.log("Hours: " + data.hours);
+
+				// Number of minutes
+				data.minutes = data.duration / 1000 / 60;
+				console.log("Minutes: " + data.minutes);
+			});
+		},
+		"stamps":function(item){
+			return this.each(function(){
+				var $this = $(this),
+					data = $this.data("gantt");
+
+				// If start date, calculate stamp
+				if(item.start)
+					item.stamps.start =
+						Date.parse(item.start);
+
+				// If end date, calculate stamp
+				if(item.end)
+					item.stamps.end =
+						Date.parse(item.end);
+			});
+		},
+		"extend":function(item){
+			return this.each(function(){
+				var $this = $(this),
+					data = $this.data("gantt");
+
+				// If start less than min, set min
+				if(item.stamps.start < data.min)
+					data.min = item.stamps.start;
+
+				// If end greater than max, set max
+				if(item.stamps.end > data.max)
+					data.max = item.stamps.end;
 			});
 		},
 		"append":function(id){
@@ -191,18 +264,37 @@
 				data.gantt.append(row);
 			});
 		},
+		"scale":function(){
+			return this.each(function(){
+				var $this = $(this),
+					data = $this.data("gantt");
+			});
+		},
 		"columns":function(){
 			return this.each(function(){
 				var $this = $(this),
 					data = $this.data("gantt");
+
+				// Create arbitrary column divs
+				for(var i = 0; i < 50; i++)
+					$("#ganttify-grid").append(
+						$("<div><i></i></div>").addClass("ganttify-grid-line"));
+
+				// Set the grid spacing
+				$("div.ganttify-grid").addClass("ganttify-grid-fixed-day");
+//				$("div.ganttify-grid").addClass("ganttify-grid-flexible");
 			});
 		},
 		"bars":function(){
 			return this.each(function(){
 				var $this = $(this),
 					data = $this.data("gantt");
+
 				for(var id in data.items)
 					$this.ganttify("bar", id);
+
+				console.log("Min: " + data.min);
+				console.log("Max: " + data.max);
 			});
 		},
 		"bar":function(id){
